@@ -18,7 +18,7 @@ router.get("/:id", async (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: Product,
+    include: [{ model: Product }],
   });
   res.json(category);
 });
@@ -29,21 +29,22 @@ router.post("/", async (req, res) => {
     const result = await Category.create(data);
     res.json(result);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Failed to create category" });
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
-    const category = await Category.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    });
-    res.json(category);
+    const category = await Category.findByPk(req.params.id);
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    category.category_name = req.body.category_name;
+    await category.save();
+    res.status(200).json(category);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Failed to update category" });
   }
 });
