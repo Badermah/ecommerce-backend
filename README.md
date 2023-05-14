@@ -9,6 +9,10 @@ Comand line app that allows you to keep track of categories employees and produc
 
 This video demonstarates the categories Get Post Put and Delete routes.
 
+
+https://github.com/Badermah/ecommerce-backend/assets/121147442/5572d632-b759-4c64-a1e5-35ab6f2564e5
+
+
 ## Links
 
 https://github.com/Badermah/ecommerce-backend
