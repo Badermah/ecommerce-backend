@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
     const category = await Category.findAll({ include: Product });
     res.json(category);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Failed to get categories" });
   }
 });
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
   try {
     const data = req.body;
     const result = await Category.create(data);
-    res.json(result);
+    res.status(200).json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to create category" });
@@ -51,14 +51,14 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const category = await Category.destroy({
-      where: {
-        id: req.params.id,
-      },
-    });
-    res.json(category);
+    const category = await Category.findByPk(req.params.id);
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    await category.destroy();
+    res.status(200).json({ message: "Category deleted" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Failed to delete category" });
   }
 });
